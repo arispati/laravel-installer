@@ -1,0 +1,29 @@
+{
+    "name": "arispati/laravel-installer",
+    "description": "Laravel installer package",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Arispati\\LaravelInstaller\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Arispati",
+            "email": "masarispati@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "illuminate/support": "^9",
+        "illuminate/http": "^9"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Arispati\\LaravelInstaller\\LaravelInstallerProvider"
+            ]
+        }
+    }
+}
