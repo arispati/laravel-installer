@@ -50,9 +50,12 @@ class InstallerController
     public function install()
     {
         try {
-            Artisan::call('migrate');
+            Artisan::call('migrate', [
+                '--force' => true
+            ]);
             Artisan::call('db:seed', [
-                '--class' => 'AdminSeeder'
+                '--class' => 'AdminSeeder',
+                '--force' => true
             ]);
 
             Storage::put('installed', '');
