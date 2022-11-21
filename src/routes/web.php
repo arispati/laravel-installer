@@ -14,7 +14,7 @@
 use Arispati\LaravelInstaller\Http\Controllers\InstallerController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [InstallerController::class, 'index'])->name('install.index')->middleware('throttle:3,60');
-Route::post('validate', [InstallerController::class, 'validateLicense'])->name('install.validation');
-Route::view('form', 'installer::form')->name('install.form');
-Route::get('submit', [InstallerController::class, 'install'])->name('install.submit');
+Route::get('/', [InstallerController::class, 'index'])->name('index')->middleware('throttle:3,60');
+Route::post('validate', [InstallerController::class, 'validateLicense'])->name('validation');
+Route::view('form', 'installer::form')->name('form');
+Route::get('submit', [InstallerController::class, 'install'])->name('submit');

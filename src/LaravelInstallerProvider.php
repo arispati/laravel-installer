@@ -63,6 +63,7 @@ class LaravelInstallerProvider extends ServiceProvider
 
         return [
             'prefix' => 'install',
+            'as' => 'install.',
             'middleware' => ['install-internet']
         ];
     }
