@@ -54,6 +54,10 @@ class InstallerController
     public function install()
     {
         try {
+            // rollback any migrations
+            Artisan::call('migrate:rollback', ['--force' => true]);
+
+            // run install commands
             $commands = Config::get('installer.commands.install', []);
 
             foreach ($commands as $command) {
