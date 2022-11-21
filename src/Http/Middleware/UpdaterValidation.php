@@ -25,7 +25,7 @@ class UpdaterValidation
     {
         if (Storage::exists('installed')) {
             try {
-                $installed = json_decode(Crypt::decrypt(Storage::get('installed')));
+                $installed = Crypt::decrypt(Storage::get('installed'));
 
                 if (is_null($installed)) {
                     throw new \Exception('update', 99);

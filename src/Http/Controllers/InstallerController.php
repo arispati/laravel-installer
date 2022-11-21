@@ -74,8 +74,8 @@ class InstallerController
                 Artisan::call($command['command'], $args);
             }
 
-            $appInfo = [
-                'app' => [
+            $appInfo = (object) [
+                'app' => (object) [
                     'version' => Config::get('app.version'),
                     'code' => Config::get('app.version_code')
                 ]
