@@ -6,6 +6,7 @@ use Arispati\LaravelInstaller\Libraries\License;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -66,7 +67,14 @@ class InstallerController
                 Artisan::call($command['command'], $args);
             }
 
-            Storage::put('installed', '');
+            $appInfo = [
+                'app' => [
+                    'version' => Config::get('app.version'),
+                    'code' => Config::get('app.version_code')
+                ]
+            ];
+
+            Storage::put('installed', Crypt::encrypt($appInfo));
 
             $status = true;
         } catch (\Exception $e) {
