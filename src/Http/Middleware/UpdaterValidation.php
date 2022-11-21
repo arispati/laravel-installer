@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Storage;
 
 class UpdaterValidation
 {
-    protected $updaterRoute = 'dashboard.index';
-
     /**
      * Handle an incoming request.
      *
@@ -31,14 +29,14 @@ class UpdaterValidation
                     throw new \Exception('update', 99);
                 }
 
-                if ($installed->app->code <= Config::get('app.version_code')) {
+                if ($installed->app->code < Config::get('app.version_code')) {
                     throw new \Exception('update', 99);
                 }
             } catch (\Exception $e) {
                 if ($e->getCode() == 99) {
                     $request->session()->put('has_update', true);
 
-                    return Redirect::route($this->updaterRoute);
+                    return Redirect::route('installer.update');
                 } else {
                     App::abort(404);
                 }

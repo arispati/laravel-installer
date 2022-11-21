@@ -92,4 +92,43 @@ class InstallerController
             'status' => $status
         ]);
     }
+
+    /**
+     * Updater
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function update(Request $request)
+    {
+        try {
+            // run install commands
+            $commands = Config::get('installer.commands_update', []);
+
+            foreach ($commands as $command) {
+                $args = array_merge($command['args'], $this->forceCommand);
+
+                Artisan::call($command['command'], $args);
+            }
+
+            $request->session()->forget('has_update');
+
+            $appInfo = (object) [
+                'app' => (object) [
+                    'version' => Config::get('app.version'),
+                    'code' => Config::get('app.version_code')
+                ]
+            ];
+
+            Storage::put('installed', Crypt::encrypt($appInfo));
+
+            $status = true;
+        } catch (\Exception $e) {
+            $status = false;
+        }
+
+        return Response::json([
+            'status' => $status
+        ]);
+    }
 }

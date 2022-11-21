@@ -45,10 +45,11 @@ class LaravelInstallerProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group([
+            'middleware' => ['web'],
             'prefix' => 'installer',
             'as' => 'installer.'
         ], function () {
-            $this->loadRoutesFrom(__DIR__ . '/routes/install.php');
+            $this->loadRoutesFrom(__DIR__ . '/routes/installer.php');
         });
     }
 }
