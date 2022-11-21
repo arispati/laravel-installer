@@ -1,6 +1,6 @@
 <?php
 
-namespace Arispati\LaravelInstaller\Libraries;
+namespace Arispati\LaravelInstaller\Libraries\Contracts;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;

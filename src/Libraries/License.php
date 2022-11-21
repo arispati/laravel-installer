@@ -2,6 +2,8 @@
 
 namespace Arispati\LaravelInstaller\Libraries;
 
+use Arispati\LaravelInstaller\Libraries\Contracts\StorageKeySubmission;
+
 class License extends StorageKeySubmission
 {
     /**

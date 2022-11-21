@@ -4,6 +4,7 @@
       <div class="card text-center">
         <div class="card-header">Halaman Instalasi</div>
         <form action="{{ route('installer.validation') }}" method="post">
+          @csrf
           <div class="card-body text-start">
             <div class="mb-3">
               <label for="license" class="form-label">Lisensi</label>
