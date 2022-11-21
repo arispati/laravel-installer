@@ -5,6 +5,7 @@ namespace Arispati\LaravelInstaller\Http\Controllers;
 use Arispati\LaravelInstaller\Libraries\License;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -53,13 +54,13 @@ class InstallerController
     public function install()
     {
         try {
-            Artisan::call('migrate', [
-                '--force' => true
-            ]);
-            Artisan::call('db:seed', [
-                '--class' => 'AdminSeeder',
-                '--force' => true
-            ]);
+            $commands = Config::get('installer.commands.install', []);
+
+            foreach ($commands as $command) {
+                $args = array_merge($command['args'], ['--force' => true]);
+
+                Artisan::call($command['command'], $args);
+            }
 
             Storage::put('installed', '');
 
