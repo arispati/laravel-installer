@@ -2,7 +2,7 @@
 
 namespace Arispati\LaravelInstaller\Libraries;
 
-class License extends StorageKeySubmission
+class ResetPassword extends StorageKeySubmission
 {
     /**
      * Get file name
@@ -11,7 +11,7 @@ class License extends StorageKeySubmission
      */
     protected static function getFileName(): string
     {
-        return 'license';
+        return 'resetpass';
     }
 
     /**
@@ -21,6 +21,6 @@ class License extends StorageKeySubmission
      */
     protected static function getKeyName(): string
     {
-        return 'LICENSE KEY';
+        return 'RESET KEY';
     }
 }

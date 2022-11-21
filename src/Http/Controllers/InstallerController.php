@@ -74,14 +74,7 @@ class InstallerController
                 Artisan::call($command['command'], $args);
             }
 
-            $appInfo = (object) [
-                'app' => (object) [
-                    'version' => Config::get('app.version'),
-                    'code' => Config::get('app.version_code')
-                ]
-            ];
-
-            Storage::put('installed', Crypt::encrypt($appInfo));
+            Storage::put('installed', Crypt::encrypt($this->getAppInfo()));
 
             $status = true;
         } catch (\Exception $e) {
@@ -111,16 +104,9 @@ class InstallerController
                 Artisan::call($command['command'], $args);
             }
 
+            Storage::put('installed', Crypt::encrypt($this->getAppInfo()));
+
             $request->session()->forget('has_update');
-
-            $appInfo = (object) [
-                'app' => (object) [
-                    'version' => Config::get('app.version'),
-                    'code' => Config::get('app.version_code')
-                ]
-            ];
-
-            Storage::put('installed', Crypt::encrypt($appInfo));
 
             $status = true;
         } catch (\Exception $e) {
@@ -130,5 +116,20 @@ class InstallerController
         return Response::json([
             'status' => $status
         ]);
+    }
+
+    /**
+     * Get app info
+     *
+     * @return object
+     */
+    protected function getAppInfo(): object
+    {
+        return (object) [
+            'app' => (object) [
+                'version' => Config::get('app.version'),
+                'code' => Config::get('app.version_code')
+            ]
+        ];
     }
 }
