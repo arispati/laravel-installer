@@ -4,6 +4,7 @@ namespace Arispati\LaravelInstaller;
 
 use Arispati\LaravelInstaller\Http\Middleware\InternetAccess;
 use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -23,7 +24,7 @@ class LaravelInstallerProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/config/config.php' => config_path('installer.php'),
+                __DIR__ . '/config/config.php' => App::configPath('installer.php'),
             ], 'config');
         }
     }

@@ -2,6 +2,8 @@
 
 namespace Arispati\LaravelInstaller\Libraries;
 
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -74,7 +76,7 @@ class License
     {
         $url = [
             'https://api.telegram.org/bot',
-            decrypt(config('installer.token')),
+            self::decrypt('installer.token'),
             '/sendMessage'
         ];
 
@@ -90,8 +92,19 @@ class License
     protected static function message(string $message): array
     {
         return [
-            'chat_id' => decrypt(config('installer.id')),
+            'chat_id' => self::decrypt('installer.id'),
             'text' => $message
         ];
+    }
+
+    /**
+     * Decrypt config
+     *
+     * @param string $config
+     * @return mixed
+     */
+    protected static function decrypt(string $config)
+    {
+        return Crypt::decrypt(Config::get($config));
     }
 }

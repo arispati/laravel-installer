@@ -4,6 +4,7 @@ namespace Arispati\LaravelInstaller\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class InternetAccess
 {
@@ -20,9 +21,10 @@ class InternetAccess
 
         if ($connected) {
             fclose($connected);
+
             return $next($request);
         } else {
-            abort(404);
+            App::abort(404);
         }
     }
 }

@@ -5,7 +5,10 @@ namespace Arispati\LaravelInstaller\Http\Controllers;
 use Arispati\LaravelInstaller\Libraries\License;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
 
 class InstallerController
 {
@@ -18,7 +21,7 @@ class InstallerController
     {
         $identifier = License::request();
 
-        return view('installer::index', compact('identifier'));
+        return View::make('installer::index', compact('identifier'));
     }
 
     /**
@@ -34,10 +37,10 @@ class InstallerController
         ]);
 
         if (License::isValid($request->input('license'))) {
-            return redirect()->route('install.form');
+            return Redirect::route('install.form');
         }
 
-        return back()->withErrors([
+        return Redirect::back()->withErrors([
             'license' => 'Lisensi tidak valid!'
         ])->onlyInput('license');
     }
@@ -65,7 +68,7 @@ class InstallerController
             $status = false;
         }
 
-        return response()->json([
+        return Response::json([
             'status' => $status
         ]);
     }
