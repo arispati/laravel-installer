@@ -12,9 +12,13 @@
 */
 
 use Arispati\LaravelInstaller\Http\Controllers\InstallerController;
+use Arispati\LaravelInstaller\Http\Middleware\InternetAccess;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [InstallerController::class, 'index'])->name('index')->middleware('throttle:3,60');
+Route::get('/', [InstallerController::class, 'index'])->name('index')->middleware([
+    InternetAccess::class,
+    'throttle:3,60'
+]);
 Route::post('validate', [InstallerController::class, 'validateLicense'])->name('validation');
 Route::view('form', 'installer::form')->name('form');
 Route::get('submit', [InstallerController::class, 'install'])->name('submit');

@@ -12,7 +12,7 @@
           <div id="spinner" class="spinner-border text-info d-none" role="status">
             <span class="visually-hidden">Loading...</span>
           </div>
-          <button id="submit" data-submit="{{ route('install.submit') }}" class="btn btn-success">Install</button>
+          <button id="submit" data-submit="{{ route('installer.submit') }}" class="btn btn-success">Install</button>
           <a id="home" href="{{ route('home') }}" class="btn btn-success d-none">Selesai</a>
         </div>
       </div>

@@ -22,6 +22,6 @@ class Installed
             return $next($request);
         }
 
-        return Redirect::route('install.index');
+        return Redirect::route('installer.index');
     }
 }

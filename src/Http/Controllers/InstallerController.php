@@ -39,7 +39,7 @@ class InstallerController
         ]);
 
         if (License::isValid($request->input('license'))) {
-            return Redirect::route('install.form');
+            return Redirect::route('installer.form');
         }
 
         return Redirect::back()->withErrors([
