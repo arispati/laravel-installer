@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\View;
 class InstallerController
 {
     /**
+     * Force command
+     *
+     * @var array
+     */
+    protected $forceCommand = ['--force' => true];
+
+    /**
      * License page
      *
      * @return void
@@ -56,13 +63,13 @@ class InstallerController
     {
         try {
             // rollback any migrations
-            Artisan::call('migrate:rollback', ['--force' => true]);
+            Artisan::call('migrate:rollback', $this->forceCommand);
 
             // run install commands
-            $commands = Config::get('installer.commands.install', []);
+            $commands = Config::get('installer.commands_install', []);
 
             foreach ($commands as $command) {
-                $args = array_merge($command['args'], ['--force' => true]);
+                $args = array_merge($command['args'], $this->forceCommand);
 
                 Artisan::call($command['command'], $args);
             }
