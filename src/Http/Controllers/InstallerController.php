@@ -64,7 +64,11 @@ class InstallerController
         try {
             // rollback any migrations
             Artisan::call('migrate:rollback', $this->forceCommand);
+        } catch (\Exception $e) {
+            // do nothing
+        }
 
+        try {
             // run install commands
             $commands = Config::get('installer.commands_install', []);
 

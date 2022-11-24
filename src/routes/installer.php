@@ -17,10 +17,7 @@ use Arispati\LaravelInstaller\Http\Middleware\UpdaterHasUpdate;
 use Illuminate\Support\Facades\Route;
 
 // Install routes
-Route::get('/', [InstallerController::class, 'index'])->name('index')->middleware([
-    InternetAccess::class,
-    'throttle:3,60'
-]);
+Route::get('/', [InstallerController::class, 'index'])->name('index')->middleware(InternetAccess::class);
 Route::post('validate', [InstallerController::class, 'validateLicense'])->name('validation');
 Route::view('form', 'installer::form')->name('form');
 Route::get('submit', [InstallerController::class, 'install'])->name('submit');

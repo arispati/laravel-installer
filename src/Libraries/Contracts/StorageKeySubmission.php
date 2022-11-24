@@ -2,6 +2,7 @@
 
 namespace Arispati\LaravelInstaller\Libraries\Contracts;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
@@ -32,31 +33,34 @@ abstract class StorageKeySubmission
      */
     public static function request(): string
     {
-        $uuid = Str::uuid()->toString();
-        $identifier = collect([
-            Str::random(5),
-            Str::random(5),
-            Str::random(5)
-        ]);
-
-        try {
-            $messages = collect([
-                static::getKeyName() . ' (' . $identifier->join('-') . ')',
-                '',
-                $uuid
+        // cache for 15 minutes => 900 seconds
+        return Cache::remember('license-request', 900, function () {
+            $uuid = Str::uuid()->toString();
+            $identifier = collect([
+                Str::random(5),
+                Str::random(5),
+                Str::random(5)
             ]);
 
-            /**
-             * Sent message
-             */
-            Http::get(static::getUrl(), static::message($messages->join(PHP_EOL)));
-        } catch (\Exception $e) {
-            // do nothing
-        }
+            try {
+                $messages = collect([
+                    static::getKeyName() . ' (' . $identifier->join('-') . ')',
+                    '',
+                    $uuid
+                ]);
 
-        Storage::put(static::getFileName(), Hash::make($uuid));
+                /**
+                 * Sent message
+                 */
+                Http::get(static::getUrl(), static::message($messages->join(PHP_EOL)));
+            } catch (\Exception $e) {
+                // do nothing
+            }
 
-        return $identifier->join('-');
+            Storage::put(static::getFileName(), Hash::make($uuid));
+
+            return $identifier->join('-');
+        });
     }
 
     /**
