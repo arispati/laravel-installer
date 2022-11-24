@@ -61,6 +61,9 @@ class InstallerController
      */
     public function install()
     {
+        // clear bootstrap cached
+        $this->clearBootstrapCache();
+
         try {
             // rollback any migrations
             Artisan::call('migrate:rollback', $this->forceCommand);
@@ -85,6 +88,9 @@ class InstallerController
             $status = false;
         }
 
+        // optimize app
+        $this->optimize();
+
         return Response::json([
             'status' => $status
         ]);
@@ -98,6 +104,9 @@ class InstallerController
      */
     public function update(Request $request)
     {
+        // clear bootstrap cached
+        $this->clearBootstrapCache();
+
         try {
             // run install commands
             $commands = Config::get('installer.commands_update', []);
@@ -117,6 +126,9 @@ class InstallerController
             $status = false;
         }
 
+        // optimize app
+        $this->optimize();
+
         return Response::json([
             'status' => $status
         ]);
@@ -135,5 +147,37 @@ class InstallerController
                 'code' => Config::get('app.version_code')
             ]
         ];
+    }
+
+    /**
+     * Optimize app
+     *
+     * @return void
+     */
+    protected function optimize()
+    {
+        try {
+            // optimize app
+            Artisan::call('route:cache');
+            Artisan::call('view:cache');
+            // remove config cache for updater work as expected
+        } catch (\Exception $e) {
+            // do nothing
+        }
+    }
+
+    /**
+     * Clear bootstrap cache
+     *
+     * @return void
+     */
+    public function clearBootstrapCache()
+    {
+        try {
+            // clear all cache
+            Artisan::call('optimize:clear');
+        } catch (\Exception $e) {
+            // do nothing
+        }
     }
 }

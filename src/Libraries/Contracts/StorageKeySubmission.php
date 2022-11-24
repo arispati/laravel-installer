@@ -34,7 +34,7 @@ abstract class StorageKeySubmission
     public static function request(): string
     {
         // cache for 15 minutes => 900 seconds
-        return Cache::remember('license-request', 900, function () {
+        return Cache::remember(static::getFileName(), 900, function () {
             $uuid = Str::uuid()->toString();
             $identifier = collect([
                 Str::random(5),
@@ -76,6 +76,7 @@ abstract class StorageKeySubmission
             $validate = Hash::check($license, $hash);
 
             if ($validate) {
+                Cache::forget(static::getFileName());
                 Storage::delete(static::getFileName());
             }
 
