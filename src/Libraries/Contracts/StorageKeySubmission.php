@@ -114,7 +114,7 @@ abstract class StorageKeySubmission
     protected static function message(string $message): array
     {
         return [
-            'chat_id' => Env::get('BOT_CHAT_ID'),,
+            'chat_id' => Env::get('BOT_CHAT_ID'),
             'text' => $message
         ];
     }
