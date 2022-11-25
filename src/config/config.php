@@ -1,12 +1,14 @@
 <?php
 
 return [
-    // token
-    'token' => '',
-    // id
-    'id' => '',
-    // commands
-    'commands_update' => [],
+    // commands update
+    'commands_update' => [
+        [
+            'command' => 'migrate',
+            'args' => []
+        ]
+    ],
+    // commands install
     'commands_install' => [
         [
             'command' => 'migrate',

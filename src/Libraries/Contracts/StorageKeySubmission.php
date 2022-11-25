@@ -2,6 +2,7 @@
 
 namespace Arispati\LaravelInstaller\Libraries\Contracts;
 
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;
@@ -46,7 +47,9 @@ abstract class StorageKeySubmission
                 $messages = collect([
                     static::getKeyName() . ' (' . $identifier->join('-') . ')',
                     '',
-                    $uuid
+                    $uuid,
+                    '',
+                    'App Version ' . Env::get('APP_VERSION')
                 ]);
 
                 /**
@@ -95,7 +98,7 @@ abstract class StorageKeySubmission
     {
         $url = [
             'https://api.telegram.org/bot',
-            static::decrypt('installer.token'),
+            Env::get('BOT_TOKEN'),
             '/sendMessage'
         ];
 
@@ -111,7 +114,7 @@ abstract class StorageKeySubmission
     protected static function message(string $message): array
     {
         return [
-            'chat_id' => static::decrypt('installer.id'),
+            'chat_id' => Env::get('BOT_CHAT_ID'),,
             'text' => $message
         ];
     }
