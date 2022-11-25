@@ -5,8 +5,8 @@ namespace Arispati\LaravelInstaller\Http\Middleware;
 use Closure;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +30,7 @@ class UpdaterValidation
                     throw new \Exception('update', 99);
                 }
 
-                if ($installed->app->code < Config::get('app.version_code')) {
+                if ($installed->app->code < Env::get('APP_VERSION_CODE')) {
                     throw new \Exception('update', 99);
                 }
             } catch (DecryptException $e) {

@@ -4,6 +4,7 @@ namespace Arispati\LaravelInstaller\Http\Controllers;
 
 use Arispati\LaravelInstaller\Libraries\License;
 use Illuminate\Http\Request;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Crypt;
@@ -143,8 +144,8 @@ class InstallerController
     {
         return (object) [
             'app' => (object) [
-                'version' => Config::get('app.version'),
-                'code' => Config::get('app.version_code')
+                'version' => Env::get('APP_VERSION'),
+                'code' => Env::get('APP_VERSION_CODE')
             ]
         ];
     }
@@ -158,9 +159,9 @@ class InstallerController
     {
         try {
             // optimize app
+            Artisan::call('config:cache');
             Artisan::call('route:cache');
             Artisan::call('view:cache');
-            // remove config cache for updater work as expected
         } catch (\Exception $e) {
             // do nothing
         }
