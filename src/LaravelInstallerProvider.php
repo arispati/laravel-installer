@@ -2,6 +2,7 @@
 
 namespace Arispati\LaravelInstaller;
 
+use Arispati\LaravelInstaller\Http\Middleware\Installed;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -21,6 +22,10 @@ class LaravelInstallerProvider extends ServiceProvider
         $this->registerRoutes();
 
         if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/public' => App::basePath('public'),
+            ], 'public');
+
             $this->publishes([
                 __DIR__ . '/config/config.php' => App::configPath('installer.php'),
             ], 'config');
@@ -45,7 +50,7 @@ class LaravelInstallerProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group([
-            'middleware' => ['web'],
+            'middleware' => ['web', Installed::class],
             'prefix' => 'installer',
             'as' => 'installer.'
         ], function () {
