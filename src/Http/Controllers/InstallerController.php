@@ -160,6 +160,7 @@ class InstallerController
         try {
             // optimize app
             Artisan::call('config:cache');
+            Artisan::call('event:cache');
             Artisan::call('route:cache');
             Artisan::call('view:cache');
         } catch (\Exception $e) {

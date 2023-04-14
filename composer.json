@@ -16,8 +16,8 @@
     ],
     "minimum-stability": "stable",
     "require": {
-        "illuminate/support": "^9|^10",
-        "illuminate/http": "^9|^10"
+        "illuminate/support": "^10",
+        "illuminate/http": "^10"
     },
     "extra": {
         "laravel": {
